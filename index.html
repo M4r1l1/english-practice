@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Practice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --apple-blue: #8B5CF6;
+            --apple-green: #34C759;
+            --apple-red: #FF3B30;
+            --apple-gray-1: #8E8E93;
+            --apple-gray-2: #AEAEB2;
+            --apple-gray-3: #C7C7CC;
+            --apple-gray-4: #D1D1D6;
+            --apple-gray-5: #E5E5EA;
+            --apple-gray-6: #F2F2F7;
+            --apple-bg: #FFFFFF;
+            --apple-text: #1D1D1F;
+            --apple-text-secondary: #86868B;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: var(--apple-gray-6);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            color: var(--apple-text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 680px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            margin-bottom: 0;
+            color: var(--apple-text);
+        }
+
+        .quiz-card {
+            background: var(--apple-bg);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 24px;
+        }
+
+        .question-number {
+            color: var(--apple-text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .definition {
+            font-size: 1.375rem;
+            line-height: 1.5;
+            margin-bottom: 32px;
+            color: var(--apple-text);
+            font-weight: 400;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: var(--apple-gray-6);
+            border: none;
+            border-radius: 14px;
+            padding: 18px 24px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+            font-size: 1.0625rem;
+            text-align: left;
+            color: var(--apple-text);
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option:hover:not(.disabled) {
+            background: var(--apple-gray-5);
+            transform: scale(1.01);
+        }
+
+        .option:active:not(.disabled) {
+            transform: scale(0.99);
+        }
+
+        .option.correct {
+            background: rgba(52, 199, 89, 0.15);
+            color: #248A3D;
+        }
+
+        .option.incorrect {
+            background: rgba(255, 59, 48, 0.15);
+            color: #D70015;
+        }
+
+        .option.disabled {
+            cursor: default;
+        }
+
+        .option.show-correct {
+            background: rgba(52, 199, 89, 0.15);
+            color: #248A3D;
+        }
+
+        .example-box {
+            display: none;
+            margin-top: 24px;
+            padding: 20px 24px;
+            background: #FFFFFF;
+            border-radius: 12px;
+            border: 1px solid var(--apple-gray-5);
+        }
+
+        .example-box.show {
+            display: block;
+        }
+
+        .example-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #86868B;
+            margin-bottom: 8px;
+        }
+
+        .example-text {
+            font-size: 1.0625rem;
+            line-height: 1.6;
+            color: #1D1D1F;
+            font-style: italic;
+        }
+
+        .example-text strong {
+            font-style: normal;
+            color: var(--apple-blue);
+            font-weight: 600;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--apple-gray-5);
+        }
+
+        .footer-left {
+            display: flex;
+            gap: 8px;
+        }
+
+        .next-btn {
+            background: var(--apple-bg);
+            color: var(--apple-blue);
+            border: none;
+            padding: 12px 24px;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            border-radius: 980px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .next-btn svg {
+            transition: transform 0.2s ease;
+        }
+
+        .next-btn:hover {
+            background: var(--apple-gray-6);
+            transform: scale(1.02);
+        }
+
+        .next-btn:hover svg {
+            transform: translateX(3px);
+        }
+
+        .next-btn:active {
+            transform: scale(0.98);
+        }
+
+        .next-btn.show {
+            display: inline-flex;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--apple-blue);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            border-radius: 980px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+            box-shadow: var(--shadow-sm);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-btn:hover {
+            background: #7C3AED;
+            transform: scale(1.02);
+        }
+
+        .control-btn:active {
+            transform: scale(0.98);
+        }
+
+        .control-btn.secondary {
+            background: var(--apple-bg);
+            color: var(--apple-text-secondary);
+        }
+
+        .control-btn.secondary:hover {
+            background: var(--apple-bg);
+            color: var(--apple-text);
+            transform: scale(1.02);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--apple-gray-5);
+            border-radius: 2px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--apple-blue);
+            border-radius: 2px;
+            transition: width 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--apple-bg);
+            color: var(--apple-text-secondary);
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            border-radius: 980px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-btn:hover {
+            color: var(--apple-text);
+            transform: scale(1.02);
+        }
+
+        .filter-btn.active {
+            background: var(--apple-blue);
+            color: white;
+        }
+
+        .result-screen {
+            text-align: center;
+            display: none;
+        }
+
+        .result-screen h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .result-score {
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: var(--apple-blue);
+            margin-bottom: 8px;
+            letter-spacing: -0.03em;
+        }
+
+        .result-message {
+            font-size: 1.125rem;
+            color: var(--apple-text-secondary);
+            margin-bottom: 32px;
+            font-weight: 400;
+        }
+
+        .missed-words {
+            background: var(--apple-bg);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 24px 0;
+            text-align: left;
+            max-height: 320px;
+            overflow-y: auto;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .missed-words::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .missed-words::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .missed-words::-webkit-scrollbar-thumb {
+            background: var(--apple-gray-4);
+            border-radius: 4px;
+        }
+
+        .missed-words h3 {
+            color: var(--apple-red);
+            margin-bottom: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .missed-word {
+            padding: 14px 0;
+            border-bottom: 1px solid var(--apple-gray-5);
+        }
+
+        .missed-word:last-child {
+            border-bottom: none;
+        }
+
+        .missed-term {
+            color: var(--apple-blue);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .missed-def {
+            color: var(--apple-text-secondary);
+            font-size: 0.9375rem;
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --apple-bg: #1C1C1E;
+                --apple-gray-6: #000000;
+                --apple-gray-5: #1C1C1E;
+                --apple-gray-4: #2C2C2E;
+                --apple-gray-3: #3A3A3C;
+                --apple-text: #FFFFFF;
+                --apple-text-secondary: #98989D;
+                --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+                --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+                --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
+            }
+
+            .option {
+                background: var(--apple-gray-4);
+            }
+
+            .option:hover:not(.disabled) {
+                background: var(--apple-gray-3);
+            }
+
+            .control-btn.secondary {
+                background: var(--apple-gray-4);
+                color: var(--apple-gray-2);
+            }
+
+            .control-btn.secondary:hover {
+                background: var(--apple-gray-3);
+                color: var(--apple-text);
+            }
+
+            .filter-btn {
+                background: var(--apple-gray-4);
+            }
+
+            .filter-btn.active {
+                background: var(--apple-blue);
+            }
+
+            .card-footer {
+                border-top-color: var(--apple-gray-3);
+            }
+
+            .next-btn {
+                background: var(--apple-gray-4);
+            }
+
+            .next-btn:hover {
+                background: var(--apple-gray-3);
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 24px 16px;
+            }
+
+            h1 {
+                font-size: 1.875rem;
+            }
+
+            .quiz-card {
+                padding: 28px 24px;
+                border-radius: 16px;
+            }
+
+            .definition {
+                font-size: 1.1875rem;
+            }
+
+            .option {
+                padding: 16px 20px;
+            }
+
+            .filter-btn {
+                padding: 8px 16px;
+                font-size: 0.875rem;
+            }
+
+            .card-footer {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .footer-left {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .next-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+        </header>
+
+        <div class="category-filter">
+            <button class="filter-btn active" data-filter="all">All Terms</button>
+            <button class="filter-btn" data-filter="idiom">Idioms</button>
+            <button class="filter-btn" data-filter="phrasal">Phrasal Verbs</button>
+            <button class="filter-btn" data-filter="vocab">Vocabulary</button>
+            <button class="filter-btn" data-filter="collocation">Collocations</button>
+        </div>
+
+        <div class="quiz-card" id="quiz-card">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress" style="width: 0%"></div>
+            </div>
+            <div class="question-number" id="question-number">Question 1</div>
+            <div class="definition" id="definition">Loading...</div>
+            <div class="options" id="options"></div>
+            <div class="example-box" id="example-box"></div>
+            <div class="card-footer">
+                <div class="footer-left">
+                    <button class="control-btn secondary" onclick="restartQuiz()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                            <path d="M3 3v5h5"/>
+                        </svg>
+                        <span>Restart</span>
+                    </button>
+                    <button class="control-btn secondary" onclick="shuffleAndRestart()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 3h5v5"/>
+                            <path d="M4 20L21 3"/>
+                            <path d="M21 16v5h-5"/>
+                            <path d="M15 15l6 6"/>
+                            <path d="M4 4l5 5"/>
+                        </svg>
+                        <span>Shuffle</span>
+                    </button>
+                </div>
+                <button class="next-btn" id="next-btn" onclick="nextQuestion()">
+                    <span>Continue</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="result-screen" id="result-screen">
+            <h2>Quiz Complete!</h2>
+            <div class="result-score" id="final-score">0/0</div>
+            <div class="result-message" id="result-message"></div>
+            <div class="missed-words" id="missed-words"></div>
+            <div class="controls">
+                <button class="control-btn" onclick="restartQuiz()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                        <path d="M3 3v5h5"/>
+                    </svg>
+                    <span>Try Again</span>
+                </button>
+                <button class="control-btn" onclick="reviewMissed()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                    </svg>
+                    <span>Review Missed</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Database of terms - This can be updated from the Excel file
+                                        const allTerms = [
+            { term: "nurture", definition: "care for and encourage the growth or development of. the process of caring for and encouraging the growth or development of someone or something", category: "vocab", example: "Parents nurture their children by providing love and support." },
+            { term: "endowment", definition: "a quality or ability possessed or inherited by someone.", category: "vocab", example: "She has a natural endowment for music that amazes everyone." },
+            { term: "indeed", definition: "used to emphasize a statement or response confirming something already suggested", category: "vocab", example: "The test was difficult indeed, but I managed to pass." },
+            { term: "flawlessly", definition: "in a manner free from imperfections or defects; perfectly", category: "vocab", example: "She performed the song flawlessly at the concert." },
+            { term: "takeaway", definition: "a key fact, point, or idea to be remembered, typically one emerging from a discussion or meeting", category: "vocab", example: "The main takeaway from the meeting was that we need to improve communication." },
+            { term: "attempt", definition: "make an effort to achieve or complete (something, typically a difficult task or action)", category: "vocab", example: "He made an attempt to learn Spanish before his trip to Mexico." },
+            { term: "craftsman", definition: "a person who is skilled in a particular craft", category: "vocab", example: "The craftsman spent weeks carving the intricate wooden sculpture." },
+            { term: "forecast", definition: "predict or estimate (a future event or trend", category: "vocab", example: "Economists forecast a slight increase in inflation next year." },
+            { term: "grasp", definition: "to gain a good understanding of", category: "vocab", example: "It took me a while to grasp the concept of quantum physics." },
+            { term: "straight", definition: "extending or moving uniformly in one direction only; without a curve or bend", category: "vocab", example: "Draw a straight line from point A to point B." },
+            { term: "break the ice", definition: "to do or say something to relieve tension or get conversation going in a social situation", category: "idiom", example: "She told a joke to break the ice at the networking event." },
+            { term: "hit the nail on the head", definition: "to describe exactly what is causing a situation or problem", category: "idiom", example: "You hit the nail on the head when you said the project needs more funding." },
+            { term: "cost an arm and a leg", definition: "to be extremely expensive", category: "idiom", example: "That designer handbag cost an arm and a leg." },
+            { term: "beat around the bush", definition: "to avoid talking about what is important; to delay discussing something", category: "idiom", example: "Stop beating around the bush and tell me what happened." },
+            { term: "once in a blue moon", definition: "very rarely; almost never", category: "idiom", example: "I only eat fast food once in a blue moon." },
+            { term: "bite off more than you can chew", definition: "to take on more responsibility than you can handle", category: "idiom", example: "By taking five classes, I think I bite off more than you can chew." },
+            { term: "burn the midnight oil", definition: "to work late into the night", category: "idiom", example: "She\'s been burning the midnight oil to finish her thesis." },
+            { term: "cut to the chase", definition: "to get to the point without wasting time", category: "idiom", example: "Let\'s cut to the chase—are you interested in the job or not?" },
+            { term: "get out of hand", definition: "to become uncontrollable or unmanageable", category: "phrasal", example: "The party got out of hand when too many people showed up." },
+            { term: "jump on the bandwagon", definition: "to join others in doing something fashionable or likely to be successful", category: "phrasal", example: "Many companies jump on the bandwagon of sustainable packaging." },
+            { term: "let the cat out of the bag", definition: "to reveal a secret carelessly or by mistake", category: "idiom", example: "He accidentally let the cat out of the bag about the surprise party." },
+            { term: "pull someone\'s leg", definition: "to tease someone by saying something untrue", category: "idiom", example: "Don\'t worry, I\'m just pulling your leg—there\'s no test today." },
+            { term: "the ball is in your court", definition: "it is your responsibility to make the next decision or step", category: "idiom", example: "I\'ve made my offer. The ball is in your court now." },
+            { term: "throw in the towel", definition: "to give up; to admit defeat", category: "phrasal", example: "After years of struggling, she decided to throw in the towel." },
+            { term: "under the weather", definition: "feeling ill or sick", category: "idiom", example: "I\'m feeling a bit under the weather, so I\'ll stay home today." },
+            { term: "come across", definition: "to find something by chance; to appear or seem", category: "collocation", example: "I come across old photos while cleaning the attic." },
+            { term: "put up with", definition: "to tolerate or accept something unpleasant", category: "phrasal", example: "I can\'t put up with his constant complaining anymore." },
+            { term: "carry out", definition: "to perform or complete a task", category: "phrasal", example: "The team will carry out the experiment next week." },
+            { term: "break down", definition: "to stop functioning; to analyze something into components", category: "phrasal", example: "My car broke down on the highway during rush hour." },
+            { term: "bring up", definition: "to raise a topic for discussion; to raise a child", category: "phrasal", example: "She decided to bring up the issue at the meeting." },
+            { term: "call off", definition: "to cancel something", category: "phrasal", example: "They had to call off the wedding due to unforeseen circumstances." },
+            { term: "get along with", definition: "to have a friendly relationship with someone", category: "phrasal", example: "I get along with most of my colleagues." },
+            { term: "look into", definition: "to investigate or examine", category: "vocab", example: "The police are looking into the matter." },
+            { term: "run into", definition: "to meet someone unexpectedly; to encounter a problem", category: "vocab", example: "I run into my old teacher at the grocery store." },
+            { term: "turn down", definition: "to reject or refuse; to reduce the level of something", category: "phrasal", example: "She turned down the job offer because the salary was too low." },
+            { term: "figure out", definition: "to understand or solve something", category: "phrasal", example: "I finally figured out how to solve the puzzle." },
+            { term: "set up", definition: "to establish or arrange", category: "phrasal", example: "We need to set up a meeting to discuss the project." },
+            { term: "take over", definition: "to assume control or responsibility", category: "phrasal", example: "She will take over as CEO next month." },
+            { term: "hold on", definition: "to wait; to grip something tightly", category: "phrasal", example: "Hold on a moment, I need to check my calendar." },
+            { term: "sort out", definition: "to resolve or organize", category: "phrasal", example: "We need to sort out this misunderstanding." },
+            { term: "meticulous", definition: "showing great attention to detail; very careful and precise", category: "vocab", example: "She is meticulous about keeping her workspace organized." },
+            { term: "resilient", definition: "able to recover quickly from difficulties; tough", category: "vocab", example: "Children are remarkably resilient and adapt quickly to change." },
+            { term: "eloquent", definition: "fluent or persuasive in speaking or writing", category: "vocab", example: "The speaker gave an eloquent speech that moved everyone." },
+            { term: "pragmatic", definition: "dealing with things sensibly and realistically", category: "vocab", example: "We need a pragmatic approach to solve this problem." },
+            { term: "ubiquitous", definition: "present, appearing, or found everywhere", category: "vocab", example: "Smartphones have become ubiquitous in modern society." },
+            { term: "ambiguous", definition: "open to more than one interpretation; unclear", category: "vocab", example: "The contract language was ambiguous and led to confusion." },
+            { term: "compelling", definition: "evoking interest or attention in a powerfully irresistible way", category: "vocab", example: "She made a compelling argument for changing the policy." },
+            { term: "detrimental", definition: "causing harm or damage", category: "vocab", example: "Smoking is detrimental to your health." },
+            { term: "proficient", definition: "competent or skilled in doing something", category: "vocab", example: "She is proficient in three programming languages." },
+            { term: "scrutinize", definition: "to examine or inspect closely and thoroughly", category: "vocab", example: "The auditor will scrutinize every financial transaction." },
+            { term: "feasible", definition: "possible and practical to do easily", category: "vocab", example: "Is it feasible to complete the project by Friday?" },
+            { term: "discrepancy", definition: "a lack of compatibility or similarity between two or more facts", category: "vocab", example: "There\'s a discrepancy between the two reports." },
+            { term: "unprecedented", definition: "never done or known before", category: "vocab", example: "The pandemic created unprecedented challenges for businesses." },
+            { term: "comprehensive", definition: "including all or nearly all elements; complete", category: "vocab", example: "The report provides a comprehensive analysis of the market." },
+            { term: "deteriorate", definition: "to become progressively worse", category: "vocab", example: "His health began to deteriorate after the diagnosis." },
+            { term: "inherent", definition: "existing as a natural or essential characteristic", category: "vocab", example: "There are inherent risks in any investment." },
+            { term: "substantial", definition: "of considerable importance, size, or worth", category: "vocab", example: "They made substantial progress on the project." },
+            { term: "mitigate", definition: "to make less severe, serious, or painful", category: "vocab", example: "We need to mitigate the risks associated with this decision." },
+            { term: "exemplify", definition: "to be a typical example of; to illustrate", category: "vocab", example: "Her dedication exemplifies what it means to be a team player." },
+            { term: "stipulate", definition: "to demand or specify as part of an agreement", category: "vocab", example: "The contract stipulates that payment must be made within 30 days." },
+            { term: "a blessing in disguise", definition: "something that seems bad at first but turns out to be good", category: "phrasal", example: "Losing that job was a blessing in disguise—I found a better one." },
+            { term: "add insult to injury", definition: "to make a bad situation worse", category: "idiom", example: "To add insult to injury, they charged me for the broken item." },
+            { term: "barking up the wrong tree", definition: "to pursue a mistaken or misguided course of action", category: "idiom", example: "If you think I took your keys, you\'re barking up the wrong tree." },
+            { term: "bite the bullet", definition: "to face a difficult situation with courage", category: "idiom", example: "I decided to bite the bullet and have the difficult conversation." },
+            { term: "cross that bridge when you come to it", definition: "to deal with a problem when it actually happens", category: "idiom", example: "Don\'t worry about the exam now. We\'ll cross that bridge when you come to it." },
+            { term: "get cold feet", definition: "to suddenly become too frightened to do something planned", category: "idiom", example: "He got cold feet and cancelled the skydiving trip." },
+            { term: "go the extra mile", definition: "to make more effort than is expected", category: "idiom", example: "She always goes the extra mile for her clients." },
+            { term: "hit the ground running", definition: "to start something and proceed at a fast pace with enthusiasm", category: "idiom", example: "The new employee hit the ground running on her first day." },
+            { term: "keep your chin up", definition: "to remain cheerful in a difficult situation", category: "phrasal", example: "Keep your chin up—things will get better soon." },
+            { term: "leave no stone unturned", definition: "to make every possible effort", category: "idiom", example: "The detective left no stone unturned in the investigation." },
+            { term: "back down", definition: "to withdraw a claim or assertion", category: "phrasal", example: "He refused to back down from his position." },
+            { term: "brush up on", definition: "to improve or refresh one\'s knowledge of something", category: "phrasal", example: "I need to brush up on my French before the trip." },
+            { term: "come up with", definition: "to produce or think of an idea or plan", category: "phrasal", example: "Can you come up with a better solution?" },
+            { term: "do away with", definition: "to abolish or get rid of", category: "phrasal", example: "The company decided to do away with the old policy." },
+            { term: "fall through", definition: "to fail to happen or be completed", category: "phrasal", example: "Our vacation plans fell through at the last minute." },
+            { term: "get away with", definition: "to escape blame or punishment for something", category: "phrasal", example: "He thought he could get away with cheating on the test." },
+            { term: "live up to", definition: "to fulfill expectations", category: "phrasal", example: "The movie didn\'t live up to my expectations." },
+            { term: "make up for", definition: "to compensate for something", category: "phrasal", example: "He bought her flowers to make up for forgetting her birthday." },
+            { term: "put off", definition: "to postpone; to discourage", category: "phrasal", example: "Stop putting off your homework and get it done." },
+            { term: "rule out", definition: "to exclude something as a possibility", category: "phrasal", example: "We can\'t rule out the possibility of rain tomorrow." },
+            { term: "make amends", definition: "to compensate for a wrongdoing", category: "collocation", example: "He tried to make amends for his past mistakes." },
+            { term: "draw a conclusion", definition: "to form an opinion based on evidence", category: "collocation", example: "Based on the evidence, we can draw a conclusion." },
+            { term: "take into account", definition: "to consider something when making a decision", category: "collocation", example: "You should take into account all the factors before deciding." },
+            { term: "reach a compromise", definition: "to find a middle ground in a disagreement", category: "collocation", example: "After hours of negotiation, they finally reached a compromise." },
+            { term: "raise awareness", definition: "to increase public knowledge about an issue", category: "collocation", example: "The campaign aims to raise awareness about climate change." },
+            { term: "pose a threat", definition: "to present a danger or risk", category: "collocation", example: "The virus poses a threat to public health." },
+            { term: "meet a deadline", definition: "to finish something by the required time", category: "collocation", example: "I always strive to meet a deadline on my projects." },
+            { term: "bear in mind", definition: "to remember and consider something", category: "phrasal", example: "Bear in mind that the store closes at 6 PM." },
+            { term: "come to terms with", definition: "to accept something difficult", category: "collocation", example: "She\'s still trying to come to terms with the loss." },
+            { term: "shed light on", definition: "to clarify or explain something", category: "phrasal", example: "The study sheds light on the causes of the disease." },
+            { term: "ring a bell", definition: "to sound familiar or to trigger a vague memory of something", category: "idiom", example: "That name rings a bell — I think we met at the conference last year." },
+            { term: "be losing it", definition: "to stop being able to control your emotions; to start to become crazy", category: "idiom", example: "She was so stressed about the deadline that she felt like she was losing it." },
+            { term: "inside out", definition: "with the inner surface turned to face outward; also used figuratively to mean thoroughly or completely", category: "idiom", example: "He put his t-shirt on inside out and didn\'t notice until he got to work." },
+            { term: "all is fair in love and war", definition: "in certain situations, such as love or conflict, any action or method is considered acceptable", category: "idiom", example: "He used every trick to win her heart — well, all is fair in love and war." },
+            { term: "stick to your guns", definition: "to refuse to change your beliefs or plans despite pressure or opposition", category: "idiom", example: "Despite criticism from his colleagues, he stuck to his guns and launched the product." },
+            { term: "find out", definition: "to discover or learn information about something", category: "phrasal", example: "I need to find out what time the meeting starts." },
+            { term: "look forward to", definition: "to feel pleased and excited about something that is going to happen", category: "phrasal", example: "I\'m really looking forward to the summer holidays." },
+            { term: "ask out", definition: "to invite someone on a date", category: "phrasal", example: "He finally worked up the courage to ask her out." },
+            { term: "kick off", definition: "to start or begin something; also used when a game or event begins", category: "phrasal", example: "The festival kicks off on Friday evening with a live concert." },
+            { term: "level out", definition: "to stop increasing or decreasing and remain steady; to stabilize", category: "phrasal", example: "After months of growth, the company\'s profits finally leveled out." },
+            { term: "hang out", definition: "to spend time relaxing or socializing with someone", category: "phrasal", example: "We used to hang out at the park every weekend when we were kids." },
+            { term: "settle in", definition: "to become comfortable and established in a new place, job, or situation", category: "phrasal", example: "It took her a few weeks to settle in after moving to a new city." },
+            { term: "get by", definition: "to manage to survive or cope with limited resources or in a difficult situation", category: "phrasal", example: "With such a low salary, it was hard to get by each month." },
+            { term: "cheer up", definition: "to become or make someone feel happier or less sad", category: "phrasal", example: "She brought him flowers to cheer him up after a tough day." },
+            { term: "spring up", definition: "to appear or develop suddenly and quickly", category: "phrasal", example: "New coffee shops have been springing up all over the neighborhood." },
+            { term: "turn up", definition: "to arrive or appear somewhere, often unexpectedly", category: "phrasal", example: "He turned up at the party two hours late without any explanation." },
+            { term: "follow up", definition: "to take further action or make contact after an initial interaction or event", category: "phrasal", example: "She promised to follow up with the client after the meeting." },
+            { term: "go off on a tangent", definition: "to suddenly start talking about something unrelated to the main subject", category: "idiom", example: "The professor went off on a tangent about his travels and forgot to finish the lesson." },
+            { term: "open the door to", definition: "to create an opportunity or make something possible", category: "idiom", example: "Learning a second language opens the door to many career opportunities." },
+            { term: "conviction", definition: "a firmly held belief or opinion; also the state of being certain about something", category: "vocab", example: "She spoke with such conviction that everyone in the room believed her." },
+            { term: "empathy", definition: "the ability to understand and share the feelings of another person", category: "vocab", example: "Great leaders show empathy toward their team members during difficult times." },
+            { term: "self-aware", definition: "having conscious knowledge of one\'s own character, feelings, motives, and desires", category: "vocab", example: "Being self-aware helped him recognize how his behavior affected others." },
+            { term: "passionate", definition: "having or showing strong feelings or a strong belief in something", category: "vocab", example: "She is passionate about environmental conservation and volunteers every weekend." },
+            { term: "humble", definition: "having or showing a modest or low estimate of one\'s own importance; not arrogant", category: "vocab", example: "Despite his many achievements, he remained humble and approachable." },
+            { term: "adaptable", definition: "able to adjust to new conditions or changes with ease", category: "vocab", example: "Employees who are adaptable tend to thrive in fast-changing industries." },
+            { term: "vulnerable", definition: "exposed to the possibility of being harmed; open to emotional risk or criticism", category: "vocab", example: "Admitting you don\'t know something makes you vulnerable but also more relatable." },
+            { term: "decisive", definition: "able to make decisions quickly and effectively; having a strong resolving quality", category: "vocab", example: "In a crisis, it\'s essential to be decisive and act without hesitation." },
+            { term: "integrity", definition: "the quality of being honest and having strong moral principles", category: "vocab", example: "She built her reputation on integrity, always doing what she said she would." },
+            { term: "collaborative", definition: "involving two or more people working together toward a shared goal", category: "vocab", example: "The project was a success thanks to a collaborative effort from all departments." },
+            { term: "self-indulgent", definition: "allowing oneself to enjoy pleasures or feelings excessively, often without restraint", category: "vocab", example: "Taking a three-hour bath every night seemed a bit self-indulgent, but she loved it." },
+            { term: "a hassle", definition: "something that is annoying or causes difficulty and inconvenience", category: "vocab", example: "Renewing your passport can be such a hassle with all the paperwork involved." },
+            { term: "shudder", definition: "to shake suddenly and briefly, especially from fear, disgust, or cold", category: "vocab", example: "She shuddered at the thought of giving a speech in front of hundreds of people." },
+            { term: "retro", definition: "imitative of or relating to a style from the past, typically in a nostalgic or ironic way", category: "vocab", example: "The café had a retro 1950s diner theme with vinyl booths and a jukebox." },
+            { term: "immature", definition: "behaving in a way that seems too young for one\'s age; not fully developed", category: "vocab", example: "His immature response to criticism made his colleagues lose respect for him." },
+            { term: "a touchy subject", definition: "a topic that is sensitive and likely to cause discomfort, offense, or strong emotional reactions", category: "collocation", example: "Politics is a touchy subject at family dinners, so we try to avoid it." },
+            { term: "anecdote", definition: "a short, interesting or amusing story about a real person or event", category: "vocab", example: "He began his speech with a funny anecdote about his first day at work." },
+            { term: "digress", definition: "to leave the main subject temporarily in speech or writing", category: "vocab", example: "Let me not digress — the key point I want to make is about time management." },
+            { term: "mishap", definition: "an unlucky accident or minor misfortune", category: "vocab", example: "Despite a few minor mishaps during rehearsal, the performance went smoothly." },
+            { term: "dog-eat-dog", definition: "describing a situation that is intensely competitive, where people will do anything to succeed", category: "idiom", example: "The tech startup world is dog-eat-dog — only the most innovative companies survive." },
+            { term: "rain cats and dogs", definition: "to rain very heavily", category: "idiom", example: "We had to cancel the outdoor event because it was raining cats and dogs." },
+            { term: "fight like cat and dog", definition: "to argue or quarrel continuously and intensely", category: "idiom", example: "Those two colleagues fight like cat and dog, but they always manage to meet their deadlines." },
+            { term: "go to the dogs", definition: "to become disordered, deteriorated, or ruined", category: "idiom", example: "Ever since the new management took over, that restaurant has gone to the dogs." },
+            { term: "puppy dog eyes", definition: "a begging or pleading look, used to get sympathy or a favor from someone", category: "idiom", example: "He gave her puppy dog eyes until she agreed to let him stay up late." },
+            { term: "fat cat", definition: "a highly placed, wealthy, or well-paid executive or person of influence", category: "idiom", example: "The fat cats at the top of the corporation gave themselves bonuses while cutting staff salaries." },
+            { term: "curiosity killed the cat", definition: "a warning that being too curious or nosy can lead to trouble or unpleasant consequences", category: "idiom", example: "She kept asking about the surprise party details, so her friend said, \'Curiosity killed the cat!\'" },
+            { term: "look what the cat dragged in", definition: "said when someone unwelcome or disheveled arrives unexpectedly", category: "idiom", example: "When her ex walked into the party, her friend muttered, \'Look what the cat dragged in.\'" },
+            { term: "no room to swing a cat", definition: "a very small or cramped space; not enough room", category: "idiom", example: "The studio apartment was so tiny there was no room to swing a cat." },
+            { term: "herding cats", definition: "extremely difficult to coordinate or organize, especially said of a group of people who are uncooperative", category: "idiom", example: "Managing a team of freelancers is like herding cats — everyone works on their own schedule." },
+            { term: "a cat nap", definition: "a short sleep taken during the day", category: "idiom", example: "She took a quick cat nap between meetings to recharge her energy." },
+            { term: "a cat has nine lives", definition: "said of someone who seems able to escape danger or survive difficult situations repeatedly", category: "idiom", example: "He survived three car accidents — that man is like a cat with nine lives." },
+            { term: "bell the cat", definition: "to take on a difficult or dangerous task that others are afraid to do", category: "idiom", example: "Someone had to bell the cat and tell the CEO that the project was failing." },
+            { term: "gravitate towards", definition: "to be naturally attracted to or drawn toward something or someone", category: "phrasal", example: "He gradually gravitated towards behavioral economics after studying finance for years." },
+            { term: "bookish", definition: "devoted to reading and studying; having an academic or studious nature", category: "vocab", example: "The bookish student spent every free period in the library rather than on the sports field." },
+            { term: "the black sheep", definition: "a member of a group or family who is regarded as a disgrace or who does not fit in", category: "idiom", example: "He was the black sheep of the family, always making unconventional choices." },
+            { term: "outsider", definition: "a person who does not belong to or is not accepted by a particular group or community", category: "vocab", example: "As a newcomer to the town, she felt like an outsider for the first few months." },
+            { term: "outcast", definition: "a person who has been rejected or excluded from a society or group", category: "vocab", example: "After the scandal, he became a social outcast and struggled to rebuild his reputation." },
+            { term: "misfit", definition: "a person whose behavior or attitude sets them apart from others in an uncomfortable or noticeable way", category: "vocab", example: "She always felt like a misfit in corporate environments, preferring creative work." },
+            { term: "conscience", definition: "an inner sense of right and wrong that guides a person\'s moral judgments and behavior", category: "vocab", example: "Her conscience wouldn\'t let her stay silent about the injustice she had witnessed." },
+            { term: "gather", definition: "to collect or bring things together; to accumulate over time", category: "vocab", example: "Farmers gather fruits and vegetables at the end of the growing season." },
+            { term: "recollect", definition: "to remember or recall something from the past, often with some effort", category: "vocab", example: "She could barely recollect the details of the meeting that had taken place months ago." },
+            { term: "laid off", definition: "dismissed from a job, typically due to economic reasons rather than personal fault", category: "phrasal", example: "Over 200 workers were laid off when the factory relocated overseas." },
+            { term: "autonomous", definition: "acting independently and making one\'s own decisions without external control", category: "vocab", example: "The new policy gave employees more autonomous control over their work schedules." },
+            { term: "privilege", definition: "a special right, advantage, or immunity granted to a particular person or group", category: "vocab", example: "Access to quality education should be a right for everyone, not a privilege for the few." },
+            { term: "reunite", definition: "to come together again after a period of separation", category: "vocab", example: "The charity event helped reunite families that had been separated by the conflict." },
+            { term: "grief", definition: "deep sorrow or sadness, especially caused by someone\'s death or a significant loss", category: "vocab", example: "She was overcome with grief after losing her father." },
+            { term: "grieve", definition: "to feel intense sorrow; to mourn a loss", category: "vocab", example: "It takes time to grieve after the end of a long relationship." },
+            { term: "deity", definition: "a god or goddess; a divine being worshipped in a religion", category: "vocab", example: "Ancient Greeks believed in a pantheon of deities who controlled natural forces." },
+            { term: "brake", definition: "a device used to slow down or stop a vehicle; also the act of slowing down", category: "vocab", example: "He pressed the brake hard to avoid hitting the car in front." },
+            { term: "scratch", definition: "a mark or wound made by scraping a surface with something sharp; to scrape lightly", category: "vocab", example: "She got a scratch on her arm from the rose bush." },
+            { term: "scar", definition: "a mark left on the skin after a wound has healed", category: "vocab", example: "He still has a scar on his knee from when he fell off his bike as a child." },
+            { term: "hydroplaning", definition: "a situation where a vehicle skids on a wet surface because the tires lose contact with the road", category: "vocab", example: "Heavy rain caused the car to start hydroplaning on the highway." },
+            { term: "overdrive", definition: "a state of working or functioning at a level beyond normal capacity", category: "vocab", example: "Her imagination went into overdrive when she started writing the novel." },
+            { term: "clumsy", definition: "tending to move or handle things in an awkward way; lacking coordination", category: "vocab", example: "He was so clumsy that he knocked the glass off the table twice in one evening." },
+            { term: "rush hour", definition: "the time of day when traffic or public transport is most congested, typically during commuting hours", category: "collocation", example: "Avoid driving through the city centre during rush hour if you can." },
+            { term: "traffic jam", definition: "a long line of vehicles on a road that are moving very slowly or not at all", category: "collocation", example: "We were stuck in a traffic jam for over two hours on the way home." },
+            { term: "lane", definition: "a narrow road or a marked division of a road for a single line of traffic", category: "vocab", example: "Stay in the left lane unless you are overtaking." },
+            { term: "citation", definition: "an official notice given to someone for breaking a minor law; also a reference to a source in writing", category: "vocab", example: "He received a citation for parking in a no-parking zone." },
+            { term: "connotation", definition: "an idea or feeling that a word evokes in addition to its primary meaning", category: "vocab", example: "The word \'slim\' has a more positive connotation than the word \'thin\'." },
+            { term: "soft skills", definition: "interpersonal and social abilities such as communication, teamwork, and adaptability", category: "collocation", example: "Employers increasingly value soft skills like empathy and problem-solving alongside technical qualifications." },
+            { term: "pep talk", definition: "a short speech intended to motivate or encourage someone", category: "collocation", example: "The coach gave the team a pep talk before the final match." },
+            { term: "easier said than done", definition: "used to acknowledge that something sounds straightforward but is actually difficult to achieve", category: "idiom", example: "Saving money every month is easier said than done when your expenses keep rising." },
+            { term: "one step ahead", definition: "to be slightly more advanced or better prepared than others; anticipating what comes next", category: "idiom", example: "Good managers always stay one step ahead of potential problems." },
+            { term: "scaremongering", definition: "the action of spreading frightening or exaggerated rumours to cause alarm or panic", category: "vocab", example: "The report was accused of scaremongering rather than presenting balanced facts." },
+            { term: "troubleshooting", definition: "the process of identifying and solving problems, especially in technical or mechanical systems", category: "vocab", example: "The IT team spent the afternoon troubleshooting the network failure." },
+            { term: "manpower", definition: "the number of people available and able to do a particular job or task", category: "vocab", example: "The project was delayed because the company lacked the manpower to complete it on time." },
+            { term: "bust", definition: "informal for broken or failed; also an economic period of sharp decline", category: "vocab", example: "The heating system went bust right in the middle of winter." },
+            { term: "tumble", definition: "to fall suddenly and clumsily; a sudden or accidental fall", category: "vocab", example: "She tumbled down the stairs but fortunately wasn\'t seriously hurt." },
+            { term: "spar", definition: "to argue or exchange words in a light or playful way; also to practise fighting in boxing", category: "vocab", example: "The two politicians sparred over economic policy during the debate." },
+            { term: "game of chicken", definition: "a situation where two people or groups take a risky course of action to see who will back down first", category: "idiom", example: "The trade negotiations became a game of chicken, with neither side willing to compromise first." },
+            { term: "foresee", definition: "to be aware of something before it happens; to predict or anticipate a future event", category: "vocab", example: "No one could have foreseen the extent of the crisis." },
+            { term: "take it as it comes", definition: "to deal with things as they happen, without worrying or planning too far ahead", category: "idiom", example: "She decided to take it as it comes rather than stressing about the future." },
+            { term: "time-consuming", definition: "taking up a large amount of time; requiring more time than expected or desired", category: "vocab", example: "Manually checking every spreadsheet is incredibly time-consuming." },
+            { term: "slip", definition: "to lose one\'s footing and slide accidentally; a small accident involving loss of balance", category: "vocab", example: "She slipped on the wet floor and twisted her ankle." },
+            { term: "cramp", definition: "a sudden, painful involuntary contraction of a muscle", category: "vocab", example: "He got a cramp in his leg halfway through the race." },
+            { term: "fracture", definition: "a break or crack in a bone", category: "vocab", example: "X-rays confirmed she had a hairline fracture in her wrist." },
+            { term: "sprain", definition: "an injury to a ligament caused by sudden overstretching or twisting of a joint", category: "vocab", example: "He sprained his ankle playing football and had to sit out for two weeks." },
+            { term: "bump", definition: "a swelling or lump on the body caused by a blow; to knock against something", category: "vocab", example: "She got a bump on her forehead when she walked into the cupboard door." },
+            { term: "blister", definition: "a small bubble on the skin filled with fluid, caused by friction or heat", category: "vocab", example: "Her new shoes gave her blisters on both heels after just one day." },
+            { term: "sunburn", definition: "redness and pain in the skin caused by too much exposure to ultraviolet rays from the sun", category: "vocab", example: "He forgot to apply sunscreen and ended up with a bad sunburn on his shoulders." },
+            { term: "graze", definition: "a slight wound where the surface of the skin is scraped off", category: "vocab", example: "The child had a graze on her knee from falling off her bicycle." },
+            { term: "scald", definition: "a burn caused by hot liquid or steam", category: "vocab", example: "Be careful not to scald yourself when pouring boiling water." },
+            { term: "catastrophic", definition: "involving or causing sudden great damage, suffering, or failure", category: "vocab", example: "A catastrophic system failure brought down the entire network for 12 hours." },
+            { term: "on our radar", definition: "being monitored or watched; within the range of one\'s attention or awareness", category: "idiom", example: "That supplier has been on our radar for a while — we need to evaluate them soon." },
+            { term: "probability", definition: "the likelihood or chance that something will happen", category: "vocab", example: "There is a high probability of rain this weekend according to the forecast." },
+            { term: "prioritise", definition: "to decide the order of importance of tasks or issues and deal with the most urgent ones first", category: "vocab", example: "In a crisis, you need to prioritise the most critical problems first." },
+            { term: "put it on hold", definition: "to pause or delay something temporarily", category: "phrasal", example: "They decided to put the merger on hold until market conditions improved." },
+            { term: "get beyond", definition: "to move past or overcome a difficulty, disagreement, or obstacle", category: "phrasal", example: "We need to get beyond our differences if we want this project to succeed." },
+            { term: "hostility", definition: "unfriendly or aggressive behaviour or feelings towards someone", category: "vocab", example: "There was clear hostility between the two rival teams even before the game began." },
+            { term: "collaboration", definition: "the action of working with someone else to produce or achieve something", category: "vocab", example: "The project was a success thanks to close collaboration between the two departments." },
+            { term: "mutual gain", definition: "a benefit or advantage shared by both or all parties involved", category: "collocation", example: "The partnership was built on mutual gain and shared objectives." },
+            { term: "resolution", definition: "a firm decision or the process of finding a solution to a problem or conflict", category: "vocab", example: "Both parties reached a resolution after hours of negotiation." },
+            { term: "afraid of one\'s own shadow", definition: "to be extremely nervous, timid, or easily frightened", category: "idiom", example: "After the accident, he became afraid of his own shadow and refused to drive again." },
+            { term: "bated breath", definition: "in a state of suspense and excitement while waiting for something", category: "idiom", example: "We waited with bated breath for the results of the final exam." },
+            { term: "make your blood run cold", definition: "to cause someone to feel sudden shock, fear, or horror", category: "idiom", example: "The scream in the dark made my blood run cold." },
+            { term: "break out in a cold sweat", definition: "to suddenly begin sweating profusely, usually from fear or anxiety", category: "idiom", example: "Every time he has to speak in public, he breaks out in a cold sweat." },
+            { term: "bundle of nerves", definition: "a person who is extremely anxious or tense", category: "idiom", example: "She was a bundle of nerves on her first day at the new job." },
+            { term: "transform", definition: "to make a thorough or dramatic change in the form, appearance, or character of something", category: "vocab", example: "The city plans to transform the old industrial district into a modern residential area." },
+            { term: "relocate", definition: "to move to a new place and establish a base there", category: "vocab", example: "The company decided to relocate its headquarters to the city center." },
+            { term: "convert", definition: "to change the form, character, or function of something", category: "vocab", example: "They plan to convert the abandoned warehouse into luxury apartments." },
+            { term: "demolish", definition: "to pull down or tear down a building or structure completely", category: "vocab", example: "The council voted to demolish the derelict factory on the edge of town." },
+            { term: "restore", definition: "to bring back or return something to its original condition, especially a building or work of art", category: "vocab", example: "The government funded a project to restore the historic cathedral." },
+            { term: "construct", definition: "to build or erect something, typically a large structure", category: "vocab", example: "They will construct three new schools to serve the growing population." },
+            { term: "thriving", definition: "prosperous and growing; flourishing", category: "vocab", example: "The neighborhood has become a thriving commercial hub over the last decade." },
+            { term: "from the ground up", definition: "starting completely from the beginning, with nothing already in place", category: "idiom", example: "After the fire destroyed everything, they rebuilt the business from the ground up." },
+            { term: "learn the ropes", definition: "to learn the basic facts or skills needed to do a job or activity", category: "idiom", example: "It took her a few weeks to learn the ropes at her new job." },
+            { term: "get down to business", definition: "to start focusing seriously on the matter or work at hand", category: "idiom", example: "Enough small talk — let\'s get down to business and review the proposal." },
+            { term: "up in the air", definition: "uncertain or undecided; not yet resolved", category: "idiom", example: "The launch date is still up in the air because of supply chain issues." },
+            { term: "by the books", definition: "strictly following rules, regulations, or standard procedures", category: "idiom", example: "Our accounting department does everything by the books to avoid any legal issues." },
+            { term: "get someone up to speed", definition: "to provide someone with the most recent information about a situation so they are fully informed", category: "idiom", example: "Can you get the new manager up to speed on the project before the meeting?" },
+            { term: "hands tied", definition: "unable to act freely because of restrictions, rules, or circumstances", category: "idiom", example: "I\'d like to give you a discount, but my hands are tied — it\'s company policy." },
+            { term: "bring something to the table", definition: "to contribute a useful skill, idea, or resource to a group or situation", category: "idiom", example: "She brings years of international experience to the table." },
+            { term: "long shot", definition: "something that has very little chance of success", category: "idiom", example: "Winning the contract against such large competitors is a long shot, but we\'ll try." },
+            { term: "between a rock and a hard place", definition: "in a situation where you must choose between two equally difficult or unpleasant options", category: "idiom", example: "She was between a rock and a hard place — quitting meant losing income, but staying was affecting her health." },
+            { term: "go back to the drawing board", definition: "to start over from the beginning because a plan or idea has failed", category: "idiom", example: "The prototype failed all the safety tests, so the engineers had to go back to the drawing board." },
+            { term: "way off the mark", definition: "completely wrong or very inaccurate", category: "idiom", example: "His estimate of the project cost was way off the mark — it ended up being three times higher." },
+            { term: "tweak", definition: "to make small, fine adjustments or improvements to something", category: "vocab", example: "The designer only needed to tweak the logo slightly before it was ready to publish." },
+            { term: "keep someone in the loop", definition: "to regularly inform someone about developments or updates in a situation", category: "idiom", example: "Please keep me in the loop regarding any changes to the schedule." },
+            { term: "have a lot on one\'s plate", definition: "to have many responsibilities or tasks to deal with at one time", category: "idiom", example: "I can\'t take on another project right now — I already have a lot on my plate." },
+            { term: "rule of thumb", definition: "a broadly accurate guide or principle based on experience or practice rather than theory", category: "idiom", example: "As a rule of thumb, you should save at least 20% of your monthly income." },
+            { term: "set the record straight", definition: "to correct a misunderstanding or false information by telling the truth", category: "idiom", example: "The CEO held a press conference to set the record straight about the company\'s finances." },
+            { term: "put something on the back burner", definition: "to postpone or give low priority to something, intending to deal with it later", category: "idiom", example: "We\'ll have to put the website redesign on the back burner until the busy season is over." },
+            { term: "pull the plug", definition: "to put an end to a project, activity, or situation, especially by withdrawing funding or support", category: "idiom", example: "After years of losses, the investors decided to pull the plug on the startup." },
+            { term: "in a nutshell", definition: "in summary; using as few words as possible to express the key point", category: "idiom", example: "In a nutshell, the new policy means everyone works from home on Fridays." },
+            { term: "call the shots", definition: "to be in charge and make the important decisions", category: "idiom", example: "Ever since she became CEO, she\'s the one calling the shots around here." },
+            { term: "blender", definition: "a kitchen appliance used to mix, puree, or emulsify food and other substances", category: "vocab", example: "She used a blender to make a smooth fruit shake for breakfast." },
+            { term: "can opener", definition: "a device used to open metal cans by cutting around the lid", category: "vocab", example: "We forgot to pack the can opener, so we couldn\'t open the tinned beans." },
+            { term: "cauldron", definition: "a large, deep pot typically used over an open fire for cooking", category: "vocab", example: "The chef stirred the soup in a large cauldron over the fire." },
+            { term: "chopstick", definition: "one of a pair of thin, tapered sticks used as eating utensils, common in East Asian cuisines", category: "vocab", example: "He struggled to pick up the noodles with chopsticks." },
+            { term: "cleaver", definition: "a large, heavy kitchen knife with a broad rectangular blade, used for chopping meat or vegetables", category: "vocab", example: "The butcher used a cleaver to cut through the thick pork ribs." },
+            { term: "colander", definition: "a bowl-shaped kitchen utensil with holes in it, used for draining liquid from food such as pasta", category: "vocab", example: "She drained the pasta in a colander over the kitchen sink." },
+            { term: "cutlery", definition: "knives, forks, and spoons used for eating or serving food", category: "vocab", example: "Please set the cutlery on the table before the guests arrive." },
+            { term: "dough", definition: "a thick, malleable mixture of flour and liquid used in baking bread, pastry, or pasta", category: "vocab", example: "She kneaded the dough for ten minutes until it was smooth and elastic." },
+            { term: "garlic press", definition: "a kitchen tool used to crush garlic cloves by forcing them through a grid of small holes", category: "vocab", example: "He used a garlic press to mince the cloves quickly without a knife." },
+            { term: "frying pan", definition: "a flat-bottomed pan with a long handle, used for frying food", category: "vocab", example: "She heated oil in the frying pan before adding the onions." },
+            { term: "grater", definition: "a kitchen utensil with a surface covered in sharp holes, used to shred food into small pieces", category: "vocab", example: "He used a grater to shred the cheese over the pasta." },
+            { term: "griddle", definition: "a flat metal plate or pan used for cooking food over direct heat", category: "vocab", example: "She made pancakes on a hot griddle for Sunday breakfast." },
+            { term: "oven mitts", definition: "thick, insulated gloves used to handle hot cookware safely", category: "vocab", example: "Always use oven mitts when taking a tray out of the hot oven." },
+            { term: "peeler", definition: "a kitchen tool with a blade used to remove the skin from fruits and vegetables", category: "vocab", example: "She used a peeler to quickly remove the skin from the potatoes." },
+            { term: "pestle", definition: "a heavy, club-shaped tool used with a mortar to grind and crush ingredients", category: "vocab", example: "He ground the spices into a fine powder using a pestle and mortar." },
+            { term: "pitcher", definition: "a large container with a handle and a lip, used for holding and pouring liquids", category: "vocab", example: "She brought a pitcher of iced lemonade out to the garden." },
+            { term: "rolling pin", definition: "a cylindrical tool used to flatten and shape dough when baking", category: "vocab", example: "Roll out the pastry dough with a rolling pin until it is about 3mm thick." },
+            { term: "platter", definition: "a large, flat dish used for serving food, typically at the table", category: "vocab", example: "The waiter brought out a large platter of grilled seafood." },
+            { term: "saucer", definition: "a small, shallow dish on which a cup is placed", category: "vocab", example: "He rested his teacup carefully on the saucer." },
+            { term: "tablecloth", definition: "a cloth used to cover a table, typically during meals", category: "vocab", example: "She spread a white linen tablecloth on the dining table before setting it for dinner." },
+            { term: "skimmer", definition: "a flat, perforated kitchen utensil used to remove foam or solid particles from a liquid", category: "vocab", example: "He used a skimmer to remove the foam from the top of the boiling broth." },
+            { term: "spatula", definition: "a flat, flexible kitchen tool used to mix, spread, flip, or lift food", category: "vocab", example: "He used a spatula to flip the pancakes without breaking them." },
+            { term: "squeezer", definition: "a kitchen tool used to extract juice from citrus fruits by pressing or squeezing", category: "vocab", example: "He used a squeezer to get fresh lemon juice for the salad dressing." },
+            { term: "teapot", definition: "a pot with a spout and handle used for brewing and serving tea", category: "vocab", example: "She left the tea to steep in the teapot for five minutes before pouring." },
+            { term: "napkin", definition: "a piece of cloth or paper used at a meal to wipe the fingers and lips", category: "vocab", example: "He placed a folded napkin beside each plate before the guests sat down." }
+        ];
+
+        let terms = [...allTerms];
+        let currentFilter = 'all';
+        let currentIndex = 0;
+        let score = 0;
+        let totalAnswered = 0;
+        let answered = false;
+        let missedWords = [];
+        let usedIndices = [];
+
+        // Shuffle array
+        function shuffle(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // Filter terms by category
+        function filterTerms(category) {
+            currentFilter = category;
+            if (category === 'all') {
+                terms = shuffle([...allTerms]);
+            } else {
+                terms = shuffle(allTerms.filter(t => t.category === category));
+            }
+
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.filter === category) {
+                    btn.classList.add('active');
+                }
+            });
+
+            restartQuiz();
+        }
+
+        // Get random options
+        function getRandomOptions(correctTerm) {
+            const options = [correctTerm];
+            const availableTerms = allTerms.filter(t => t.term !== correctTerm.term);
+
+            while (options.length < 4 && availableTerms.length > 0) {
+                const randomIndex = Math.floor(Math.random() * availableTerms.length);
+                options.push(availableTerms[randomIndex]);
+                availableTerms.splice(randomIndex, 1);
+            }
+
+            return shuffle(options);
+        }
+
+        // Display question
+        function displayQuestion() {
+            if (usedIndices.length >= terms.length) {
+                showResults();
+                return;
+            }
+
+            // Get a random unused index
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * terms.length);
+            } while (usedIndices.includes(randomIndex));
+
+            usedIndices.push(randomIndex);
+            currentIndex = randomIndex;
+
+            const currentTerm = terms[currentIndex];
+            const options = getRandomOptions(currentTerm);
+
+            document.getElementById('question-number').textContent = `Question ${usedIndices.length} of ${terms.length}`;
+            document.getElementById('definition').textContent = currentTerm.definition;
+
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+
+            options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option';
+                button.textContent = option.term;
+                button.onclick = () => checkAnswer(option, currentTerm, button);
+                optionsContainer.appendChild(button);
+            });
+
+            document.getElementById('next-btn').classList.remove('show');
+            document.getElementById('example-box').classList.remove('show');
+            answered = false;
+
+            // Update progress
+            const progress = (usedIndices.length / terms.length) * 100;
+            document.getElementById('progress').style.width = `${progress}%`;
+        }
+
+        // Check answer
+        function checkAnswer(selected, correct, button) {
+            if (answered) return;
+            answered = true;
+            totalAnswered++;
+
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.add('disabled'));
+
+            if (selected.term === correct.term) {
+                score++;
+                button.classList.add('correct');
+            } else {
+                button.classList.add('incorrect');
+                missedWords.push(correct);
+
+                // Highlight correct answer
+                options.forEach(opt => {
+                    if (opt.textContent === correct.term) {
+                        opt.classList.add('show-correct');
+                    }
+                });
+            }
+
+            // Show example
+            if (correct.example) {
+                const exampleBox = document.getElementById('example-box');
+                let formattedExample = correct.example;
+
+                // If the example contains **marked** text, use that
+                if (formattedExample.includes('**')) {
+                    formattedExample = formattedExample.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+                } else {
+                    // Fallback: try to match the term literally
+                    const termRegex = new RegExp(correct.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                    formattedExample = formattedExample.replace(termRegex, `<strong>${correct.term}</strong>`);
+                }
+
+                exampleBox.innerHTML = `
+                    <div class="example-label">Example</div>
+                    <div class="example-text">"${formattedExample}"</div>
+                `;
+                exampleBox.classList.add('show');
+            }
+
+            document.getElementById('next-btn').classList.add('show');
+        }
+
+        // Next question
+        function nextQuestion() {
+            displayQuestion();
+        }
+
+        // Show results
+        function showResults() {
+            document.getElementById('quiz-card').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+
+            const percentage = Math.round((score / totalAnswered) * 100);
+            document.getElementById('final-score').textContent = `${score}/${totalAnswered}`;
+
+            let message = '';
+            if (percentage >= 90) message = 'Excellent! You have mastered this vocabulary!';
+            else if (percentage >= 70) message = 'Great job! Keep practicing to improve further.';
+            else if (percentage >= 50) message = 'Good effort! Review the missed words and try again.';
+            else message = 'Keep studying! Practice makes perfect.';
+
+            document.getElementById('result-message').textContent = message;
+
+            // Display missed words
+            const missedContainer = document.getElementById('missed-words');
+            if (missedWords.length > 0) {
+                missedContainer.innerHTML = '<h3>Words to Review:</h3>';
+                missedWords.forEach(word => {
+                    missedContainer.innerHTML += `
+                        <div class="missed-word">
+                            <div class="missed-term">${word.term}</div>
+                            <div class="missed-def">${word.definition}</div>
+                        </div>
+                    `;
+                });
+                missedContainer.style.display = 'block';
+            } else {
+                missedContainer.style.display = 'none';
+            }
+        }
+
+        // Restart quiz
+        function restartQuiz() {
+            score = 0;
+            totalAnswered = 0;
+            missedWords = [];
+            usedIndices = [];
+
+            document.getElementById('progress').style.width = '0%';
+            document.getElementById('quiz-card').style.display = 'block';
+            document.getElementById('result-screen').style.display = 'none';
+
+            displayQuestion();
+        }
+
+        // Shuffle and restart
+        function shuffleAndRestart() {
+            terms = shuffle([...terms]);
+            restartQuiz();
+        }
+
+        // Review missed words
+        function reviewMissed() {
+            if (missedWords.length === 0) {
+                alert('No missed words to review!');
+                return;
+            }
+            terms = shuffle([...missedWords]);
+            restartQuiz();
+        }
+
+        // Initialize filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.onclick = () => filterTerms(btn.dataset.filter);
+        });
+
+        // Start quiz
+        terms = shuffle(terms);
+        displayQuestion();
+    </script>
+</body>
+</html>
