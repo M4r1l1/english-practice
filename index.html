@@ -566,7 +566,7 @@
 
     <script>
         // Database of terms - This can be updated from the Excel file
-                                                        const allTerms = [
+                                                                const allTerms = [
             { term: "nurture", definition: "care for and encourage the growth or development of. the process of caring for and encouraging the growth or development of someone or something", category: "vocab", example: "Parents nurture their children by providing love and support." },
             { term: "endowment", definition: "a quality or ability possessed or inherited by someone.", category: "vocab", example: "She has a natural endowment for music that amazes everyone." },
             { term: "indeed", definition: "used to emphasize a statement or response confirming something already suggested", category: "vocab", example: "The test was difficult indeed, but I managed to pass." },
@@ -835,7 +835,45 @@
             { term: "fly off the handle", definition: "to suddenly become very angry and lose self-control", category: "idiom", example: "He flew off the handle when he realized someone had dented his car." },
             { term: "full of beans", definition: "full of energy, lively and enthusiastic", category: "idiom", example: "The kids were full of beans after eating all that candy." },
             { term: "white lie", definition: "a small, harmless lie told to avoid hurting someone’s feelings or to be polite", category: "idiom", example: "She told a white lie and said she loved the gift." },
-            { term: "hot air", definition: "empty, boastful or meaningless talk that has no substance behind it", category: "idiom", example: "His promises are just hot air — he never actually does anything." }
+            { term: "hot air", definition: "empty, boastful or meaningless talk that has no substance behind it", category: "idiom", example: "His promises are just hot air — he never actually does anything." },
+            { term: "Chilly", definition: "Unpleasantly cold; uncomfortably cool", category: "vocab", example: "The weather was chilly this morning, so I wore a sweater." },
+            { term: "Harsh", definition: "Unpleasantly rough, severe, or cruel", category: "vocab", example: "The teacher\'s harsh words made the student cry." },
+            { term: "Blunt", definition: "Direct and straightforward, sometimes to the point of rudeness", category: "vocab", example: "She was very blunt with her feedback about his work." },
+            { term: "Dull", definition: "Lacking excitement, brightness, or sharpness; boring", category: "vocab", example: "The lecture was so dull that I almost fell asleep." },
+            { term: "a bed of roses", definition: "An easy, comfortable situation with no problems", category: "idiom", example: "Being a CEO is not a bed of roses; it comes with many challenges." },
+            { term: "a blast from the past", definition: "Something or someone that reminds you of the past", category: "idiom", example: "Seeing my old school friend was a real blast from the past." },
+            { term: "a bolt from the blue", definition: "A sudden, unexpected event or news", category: "idiom", example: "Her resignation came as a bolt from the blue to everyone in the office." },
+            { term: "a drop in the bucket", definition: "A very small amount compared to what is needed", category: "idiom", example: "My donation is just a drop in the bucket, but every bit helps." },
+            { term: "a fish out of water", definition: "Someone who feels uncomfortable in an unfamiliar situation", category: "idiom", example: "At the fancy party, I felt like a fish out of water." },
+            { term: "a no-brainer", definition: "An easy decision; something obvious", category: "idiom", example: "Choosing the cheaper option with better features was a no-brainer." },
+            { term: "a shot in the dark", definition: "A wild guess or attempt with little chance of success", category: "idiom", example: "I don\'t know the answer, but I\'ll take a shot in the dark." },
+            { term: "a stone\'s throw away", definition: "Very close; a short distance away", category: "idiom", example: "The bakery is just a stone\'s throw away from my house." },
+            { term: "a wolf in sheep\'s clothing", definition: "A dangerous person pretending to be harmless", category: "idiom", example: "Be careful with him; he\'s a wolf in sheep\'s clothing." },
+            { term: "above board", definition: "Honest, open, and legal", category: "idiom", example: "All our business dealings are above board and transparent." },
+            { term: "actions speak louder than words", definition: "What you do is more important than what you say", category: "idiom", example: "He promised to help, but actions speak louder than words." },
+            { term: "all ears", definition: "Listening attentively and eagerly", category: "idiom", example: "Tell me about your trip—I\'m all ears!" },
+            { term: "apple of my eye", definition: "Someone who is cherished above all others", category: "idiom", example: "His youngest daughter is the apple of his eye." },
+            { term: "at the drop of a hat", definition: "Immediately, without hesitation", category: "idiom", example: "She would travel to Paris at the drop of a hat if she had the money." },
+            { term: "at the eleventh hour", definition: "At the last possible moment", category: "idiom", example: "He finished his project at the eleventh hour." },
+            { term: "back to square one", definition: "Back to the beginning after a failed attempt", category: "idiom", example: "The plan didn\'t work, so we\'re back to square one." },
+            { term: "bend over backwards", definition: "To try very hard to help or please someone", category: "idiom", example: "My parents bent over backwards to support my education." },
+            { term: "better late than never", definition: "It\'s better to do something late than not at all", category: "idiom", example: "He finally apologized—better late than never." },
+            { term: "better safe than sorry", definition: "It\'s wise to be cautious rather than regret something later", category: "idiom", example: "I always lock my car; better safe than sorry." },
+            { term: "bite the dust", definition: "To fail, die, or be defeated", category: "idiom", example: "Another one of my plants bit the dust this week." },
+            { term: "blow your mind", definition: "To amaze or astonish you", category: "idiom", example: "The magician\'s tricks will blow your mind." },
+            { term: "break a leg", definition: "Good luck (especially before a performance)", category: "idiom", example: "Break a leg at your audition tonight!" },
+            { term: "bring home the bacon", definition: "To earn money to support the family", category: "idiom", example: "She works two jobs to bring home the bacon." },
+            { term: "burn the candle at both ends", definition: "To work too hard by doing too many things", category: "idiom", example: "If you keep burning the candle at both ends, you\'ll get sick." },
+            { term: "bury the hatchet", definition: "To make peace after an argument or dispute", category: "idiom", example: "After years of fighting, the brothers finally buried the hatchet." },
+            { term: "by the skin of your teeth", definition: "Just barely; narrowly", category: "idiom", example: "I passed the exam by the skin of my teeth." },
+            { term: "call it a day", definition: "To stop working for the day", category: "idiom", example: "It\'s getting late; let\'s call it a day." },
+            { term: "can of worms", definition: "A complicated situation that creates more problems", category: "idiom", example: "Mentioning his ex opened a whole can of worms." },
+            { term: "catch-22", definition: "A no-win situation with contradictory rules", category: "idiom", example: "You need experience to get a job, but you need a job to get experience—it\'s a catch-22." },
+            { term: "caught red-handed", definition: "Caught in the act of doing something wrong", category: "idiom", example: "The thief was caught red-handed stealing from the store." },
+            { term: "chew the fat", definition: "To chat casually for a long time", category: "idiom", example: "We sat on the porch and chewed the fat for hours." },
+            { term: "clear the air", definition: "To resolve a misunderstanding or conflict", category: "idiom", example: "Let\'s clear the air and talk about what happened." },
+            { term: "close call", definition: "A narrow escape from danger or trouble", category: "idiom", example: "That was a close call! The car almost hit us." },
+            { term: "cold turkey", definition: "To stop an addiction abruptly, without help", category: "idiom", example: "He quit smoking cold turkey last year." }
         ];
 
         let terms = [...allTerms];
